@@ -351,9 +351,7 @@ def build_metadata(result: ExperimentResult, data_file: str | Path | None) -> di
         "trained_at": result.run_date,
         "model_key": result.selected_key,
         "model": result.selected_label,
-        "model_params": {
-            k: v for k, v in getattr(cfg.models, result.selected_key).items()
-        },
+        "model_params": dict(getattr(cfg.models, result.selected_key)),
         "selection": {
             "primary_metric": cfg.selection.primary_metric,
             "rule": cfg.selection.rule,

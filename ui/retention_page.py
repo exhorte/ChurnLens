@@ -80,7 +80,7 @@ def render(ctx: AppContext) -> None:
         if p_star is None:
             st.info("With V×Q = 0 a contact can never pay off.")
         else:
-            st.info(f"**Break-even probability p\* = C / (V×Q) = {p_star:.2f}.** One more contact has a positive "
+            st.info(rf"**Break-even probability p\* = C / (V×Q) = {p_star:.2f}.** One more contact has a positive "
                     "expected net value only for a customer whose churn probability exceeds it. It follows "
                     "from your inputs, so it is exactly as reliable as C, V and Q.")
         _results(table, population.has_actual, assumptions)

@@ -73,6 +73,31 @@ def compute_metrics(y_true, proba, threshold: float = 0.5) -> dict[str, float]:
     }
 
 
+_BOOTSTRAPPABLE = ("roc_auc", "average_precision", "precision", "recall", "f1")
+
+
+def _sample_metrics(y: np.ndarray, p: np.ndarray, threshold: float, metrics: tuple[str, ...]) -> dict[str, float]:
+    """Only the requested metrics, computed cheaply (a bootstrap evaluates thousands of resamples)."""
+    pred = p >= threshold
+    tp = int(np.sum(pred & (y == 1)))
+    flagged, positives = int(pred.sum()), int(y.sum())
+    precision = tp / flagged if flagged else 0.0
+    recall = tp / positives
+    out: dict[str, float] = {}
+    for name in metrics:
+        if name == "roc_auc":
+            out[name] = float(roc_auc_score(y, p))
+        elif name == "average_precision":
+            out[name] = float(average_precision_score(y, p))
+        elif name == "precision":
+            out[name] = precision
+        elif name == "recall":
+            out[name] = recall
+        else:  # f1
+            out[name] = 2 * precision * recall / (precision + recall) if precision + recall else 0.0
+    return out
+
+
 def bootstrap_intervals(
     y_true,
     proba,
@@ -90,15 +115,18 @@ def bootstrap_intervals(
     """
     y = np.asarray(y_true).astype(int)
     p = np.asarray(proba, dtype=float)
+    unknown = set(metrics) - set(_BOOTSTRAPPABLE)
+    if unknown:
+        raise ValueError(f"Cannot bootstrap {sorted(unknown)}; choose from {list(_BOOTSTRAPPABLE)}.")
     rng = np.random.default_rng(seed)
     samples: dict[str, list[float]] = {m: [] for m in metrics}
     for _ in range(n_boot):
         idx = rng.integers(0, len(y), len(y))
-        if y[idx].min() == y[idx].max():          # a resample with one class has no ROC/AP
+        ys, ps = y[idx], p[idx]
+        if ys.min() == ys.max():                    # a resample with one class has no ROC/AP
             continue
-        values = compute_metrics(y[idx], p[idx], threshold)
-        for m in metrics:
-            samples[m].append(values[m])
+        for name, value in _sample_metrics(ys, ps, threshold, metrics).items():
+            samples[name].append(value)
     alpha = (1 - level) / 2
     return {
         m: (float(np.quantile(v, alpha)), float(np.quantile(v, 1 - alpha))) for m, v in samples.items()

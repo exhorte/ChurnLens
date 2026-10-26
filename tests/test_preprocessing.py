@@ -22,7 +22,7 @@ from churnguard.preprocessing import (
 
 
 def telco_row(**overrides):
-    row = {c: "No" for c in SERVICE_COLUMNS}
+    row = dict.fromkeys(SERVICE_COLUMNS, "No")
     row.update(Contract="Month-to-month", MonthlyCharges=50.0, TotalCharges=500.0, tenure=10)
     row.update(overrides)
     return pd.DataFrame([row])

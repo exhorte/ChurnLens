@@ -14,7 +14,7 @@ from churnguard.error_analysis import (
 )
 from churnguard.evaluation import threshold_table
 
-from .common import BLUE, GREEN, GREY, NOT_A_GUARANTEE, RED, base_layout, confusion_heatmap, pct, probability_histogram
+from .common import BLUE, GREEN, GREY, RED, base_layout, confusion_heatmap, pct, probability_histogram
 from .context import AppContext
 from .workspace import POPULATION_TEST
 

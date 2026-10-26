@@ -72,7 +72,7 @@ def test_dummy_baseline_is_a_floor_the_real_models_beat(generic_experiment):
 
 # ------------------------------------------------------------------------- selection
 def summary_frame(rows):
-    base = {m: 0.0 for m in ALL_METRICS}
+    base = dict.fromkeys(ALL_METRICS, 0.0)
     out = []
     for model, mean, std in rows:
         row = {"model": model, "n_folds": 5, **{f"{m}_mean": v for m, v in base.items()},

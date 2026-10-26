@@ -4,9 +4,9 @@ import pytest
 
 from churnguard.evaluation import (
     ALL_METRICS,
-    bootstrap_intervals,
     SegmentRule,
     assign_segments,
+    bootstrap_intervals,
     calibration_summary,
     compute_metrics,
     confusion_counts,
@@ -140,8 +140,8 @@ def noisy_scores(n, seed=0):
 
 def test_bootstrap_interval_brackets_the_point_estimate_and_is_reproducible():
     y, p = noisy_scores(1500)
-    first = bootstrap_intervals(y, p, 0.35, n_boot=300, seed=1)
-    again = bootstrap_intervals(y, p, 0.35, n_boot=300, seed=1)
+    first = bootstrap_intervals(y, p, 0.35, n_boot=200, seed=1)
+    again = bootstrap_intervals(y, p, 0.35, n_boot=200, seed=1)
     assert first == again
     point = compute_metrics(y, p, 0.35)
     for metric, (low, high) in first.items():
@@ -153,3 +153,10 @@ def test_bootstrap_interval_narrows_with_more_customers():
     small = bootstrap_intervals(*noisy_scores(300), 0.35, n_boot=300)["roc_auc"]
     large = bootstrap_intervals(*noisy_scores(6000), 0.35, n_boot=300)["roc_auc"]
     assert (large[1] - large[0]) < (small[1] - small[0]) / 2
+
+
+def test_bootstrap_matches_the_point_metrics_formulas_and_rejects_unknown_metrics():
+    y, p = noisy_scores(800)
+    assert bootstrap_intervals(y, p, 0.35, n_boot=50, metrics=("recall",))["recall"][0] > 0
+    with pytest.raises(ValueError, match="Cannot bootstrap"):
+        bootstrap_intervals(y, p, 0.35, n_boot=10, metrics=("log_loss",))

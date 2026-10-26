@@ -28,7 +28,7 @@ filterwarnings = [
 ]
 
 [tool.ruff]
-line-length = 100
+line-length = 120
 target-version = "py311"
 extend-exclude = ["venv", ".venv", "notebooks"]
 
@@ -41,5 +41,6 @@ ignore = ["SIM108"]
 "app.py" = ["E402"]
 "train_model.py" = ["E402"]
 "service/main.py" = ["E402"]
-"ui/*.py" = ["E402"]
-"tests/*.py" = ["E402"]
+# Long user-facing strings and plotly's dict(...) keyword style are intentional.
+"ui/*.py" = ["E402", "E501", "C408"]
+"tests/*.py" = ["E402", "E501"]

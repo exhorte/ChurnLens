@@ -9,8 +9,8 @@ import sklearn
 from churnguard.data import DataValidationError
 from churnguard.predictions import (
     ModelLoadError,
-    bundle_from_experiment,
     build_export,
+    bundle_from_experiment,
     load_bundle,
     score_frame,
 )

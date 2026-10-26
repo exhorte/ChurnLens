@@ -41,7 +41,7 @@ class TelcoFeatureEngineer(BaseEstimator, TransformerMixin):
     checked on the 11 blank rows), so those rows get 0 instead of an imputed median.
     """
 
-    def fit(self, X: pd.DataFrame, y=None) -> TelcoFeatureEngineer:  # noqa: D102
+    def fit(self, X: pd.DataFrame, y=None) -> TelcoFeatureEngineer:
         self._check_columns(X)
         self.is_fitted_ = True  # stateless; lets sklearn's check_is_fitted accept pipeline slices
         return self
@@ -52,7 +52,7 @@ class TelcoFeatureEngineer(BaseEstimator, TransformerMixin):
         if missing:
             raise DataValidationError(f"Missing required column(s): {missing}.")
 
-    def transform(self, X: pd.DataFrame) -> pd.DataFrame:  # noqa: D102
+    def transform(self, X: pd.DataFrame) -> pd.DataFrame:
         X = pd.DataFrame(X).copy()
         self._check_columns(X)
         total = pd.to_numeric(X["TotalCharges"], errors="coerce")
