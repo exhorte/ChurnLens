@@ -146,8 +146,11 @@ class Config:
         return asdict(self)
 
     def fingerprint(self) -> str:
-        """Short hash identifying the modelling-relevant configuration of a run."""
-        relevant = {k: v for k, v in self.to_dict().items() if k != "paths"}
+        """Short hash of the configuration that can change a trained model.
+
+        File locations and the retention-simulator defaults do not affect training, so they are left out.
+        """
+        relevant = {k: v for k, v in self.to_dict().items() if k not in ("paths", "economics")}
         blob = json.dumps(relevant, sort_keys=True).encode()
         return hashlib.sha256(blob).hexdigest()[:12]
 

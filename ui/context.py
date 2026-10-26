@@ -13,7 +13,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from churnguard.config import Config
 from churnguard.data import DataValidationError
 
-from .workspace import Population, Workspace, population_for
+from .workspace import Population, PopulationUnavailableError, Workspace, population_for
 
 
 @dataclass
@@ -30,6 +30,10 @@ class AppContext:
             return None
         try:
             return population_for(self.ws, kind or self.population_kind, self.threshold, self.uploaded)
+        except PopulationUnavailableError as exc:
+            if show_errors:
+                st.info(str(exc))
+            return None
         except DataValidationError as exc:
             if show_errors:
                 st.error(str(exc))

@@ -1,6 +1,10 @@
 [theme]
 base = "light"
-primaryColor = "#3498db"
+primaryColor = "#2f6fb3"
 
 [server]
 headless = true
+maxUploadSize = 50          # MB: uploaded CSVs stay in the session and are never written to disk by the app
+
+[browser]
+gatherUsageStats = false

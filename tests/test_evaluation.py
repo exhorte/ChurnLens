@@ -11,6 +11,8 @@ from churnguard.evaluation import (
     compute_metrics,
     confusion_counts,
     cv_scorers,
+    fast_average_precision,
+    fast_roc_auc,
     recommend_threshold,
     segment_summary,
     threshold_table,
@@ -160,3 +162,13 @@ def test_bootstrap_matches_the_point_metrics_formulas_and_rejects_unknown_metric
     assert bootstrap_intervals(y, p, 0.35, n_boot=50, metrics=("recall",))["recall"][0] > 0
     with pytest.raises(ValueError, match="Cannot bootstrap"):
         bootstrap_intervals(y, p, 0.35, n_boot=10, metrics=("log_loss",))
+
+
+@pytest.mark.parametrize("seed", range(5))
+def test_fast_rank_metrics_equal_sklearn_even_with_tied_scores(seed):
+    rng = np.random.default_rng(seed)
+    y = (rng.random(400) < 0.3).astype(int)
+    p = np.round(np.clip(0.3 + 0.3 * (y - 0.3) + rng.normal(0, 0.2, 400), 0, 1), 1)   # many ties
+    m = compute_metrics(y, p, 0.5)
+    assert fast_roc_auc(y, p) == pytest.approx(m["roc_auc"], abs=1e-12)
+    assert fast_average_precision(y, p) == pytest.approx(m["average_precision"], abs=1e-12)

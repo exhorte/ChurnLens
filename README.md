@@ -33,6 +33,22 @@ The project is an analytical and educational tool—not a production-ready decis
 
 The saved demo model and its reports can load without the raw Telco CSV. Some customer-level views need the original dataset, however; without it, upload data or obtain the demo CSV as described in [data/README.md](data/README.md).
 
+### Screenshots
+
+Captured from the running app on the committed demo model (held-out test customers, threshold 0.33).
+
+| Dashboard | Model Comparison |
+|---|---|
+| ![Dashboard](docs/img/dashboard.jpg) | ![Model Comparison](docs/img/model_comparison.jpg) |
+| **Error Analysis** | **Explainability** |
+| ![Error Analysis](docs/img/error_analysis.jpg) | ![Explainability](docs/img/explainability.jpg) |
+
+![Retention Simulator](docs/img/retention_simulator.jpg)
+
+### Technology stack
+
+Python ≥ 3.11 · scikit-learn · pandas · NumPy · SciPy · Plotly · Streamlit · FastAPI / Uvicorn / Pydantic · pytest · Ruff · Docker. No database, no external service, no account system.
+
 ## How the machine-learning workflow works
 
 The demo training protocol is intentionally designed to keep model selection and the final test evaluation separate:

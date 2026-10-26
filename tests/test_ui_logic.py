@@ -15,6 +15,7 @@ from ui.workspace import (
     POPULATION_ALL,
     POPULATION_TEST,
     POPULATION_UPLOAD,
+    PopulationUnavailableError,
     population_for,
     workspace_from_experiment,
 )
@@ -63,7 +64,7 @@ def test_uploaded_file_without_id_column_still_scores(ws, generic_df):
 
 
 def test_bad_uploads_give_readable_errors(ws, generic_df):
-    with pytest.raises(DataValidationError, match="Upload a CSV"):
+    with pytest.raises(PopulationUnavailableError, match="Upload a CSV"):
         population_for(ws, POPULATION_UPLOAD, 0.5, uploaded=None)
     with pytest.raises(DataValidationError, match="Missing required column"):
         population_for(ws, POPULATION_UPLOAD, 0.5, uploaded=generic_df[["tenure"]])
@@ -72,7 +73,7 @@ def test_bad_uploads_give_readable_errors(ws, generic_df):
 def test_pages_that_need_features_explain_what_is_missing(ws):
     featureless = type(ws)(**{**ws.__dict__, "prepared": None})
     assert not featureless.has_features
-    with pytest.raises(DataValidationError, match="needs the training dataset"):
+    with pytest.raises(PopulationUnavailableError, match="needs the training dataset"):
         population_for(featureless, POPULATION_TEST, 0.5)
 
 

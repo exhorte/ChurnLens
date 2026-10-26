@@ -84,9 +84,10 @@ the page shows the sensitivity of net benefit to `Q` for exactly that reason, an
   model ranks highest are not necessarily the most persuadable.
 * No fixed campaign cost, no discount offered to retained customers, no time horizon or discounting, no
   cannibalisation or contact fatigue, no cost of contacting customers who would not have left (beyond `C`).
+* Each contacted customer is counted independently, and a single campaign is modelled: no budget carry-over, no
+  repeated contacts.
 * Probabilities come from a model trained on a sample data set; they transfer to other customers only after your own
   validation.
-* Fixed once: the formulas count each contacted customer independently; no budget carry-over between campaigns.
 
 Use the simulator to *explore* "what would I have to believe for this campaign to pay off?" (`p*`, `Q*`, sensitivity),
 not to claim a result.

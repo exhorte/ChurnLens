@@ -24,12 +24,16 @@ from churnguard.data import (
     prepare_dataset,
 )
 from churnguard.predictions import ModelBundle, ScoredFrame, bundle_from_experiment, load_bundle, score_frame
-from churnguard.schema import require_valid
+from churnguard.schema import require_valid, validate_features
 from churnguard.training import ExperimentResult
 
 POPULATION_TEST = "Held-out test customers (unseen during training)"
 POPULATION_ALL = "All customers of the dataset (includes training customers)"
 POPULATION_UPLOAD = "New customers from an uploaded CSV (no target needed)"
+
+
+class PopulationUnavailableError(DataValidationError):
+    """Customers cannot be shown yet (nothing uploaded / dataset not loaded): guidance, not a failure."""
 
 
 @dataclass
@@ -165,8 +169,6 @@ def _attach_demo_data(ws: Workspace, config: Config) -> None:
 
 # ------------------------------------------------------------------------ populations
 def _validated(ws: Workspace, frame: pd.DataFrame) -> tuple[pd.DataFrame, list[str]]:
-    from churnguard.schema import validate_features
-
     report = validate_features(frame, ws.bundle.schema)
     report.raise_if_errors()
     assert report.frame is not None
@@ -183,7 +185,7 @@ def population_for(
     warnings: list[str] = []
     if kind == POPULATION_UPLOAD:
         if uploaded is None:
-            raise DataValidationError("Upload a CSV of customers to score.")
+            raise PopulationUnavailableError("Upload a CSV of customers to score in the sidebar.")
         id_col = ws.metadata.get("data", {}).get("id_column")
         ids = uploaded[id_col].astype(str).reset_index(drop=True) if id_col in uploaded.columns else None
         frame = uploaded.reset_index(drop=True)
@@ -191,9 +193,9 @@ def population_for(
         actual, description = None, f"{len(X):,} uploaded customers"
     else:
         if ws.prepared is None:
-            raise DataValidationError(
-                "This view needs the training dataset (data/ CSV for the demo, or the CSV you "
-                "trained on). Load it, or choose 'New customers from an uploaded CSV'."
+            raise PopulationUnavailableError(
+                "This view needs the training dataset (the data/ CSV for the demo, or the CSV you "
+                "trained on). Load it, or choose 'New customers from an uploaded CSV' in the sidebar."
             )
         schema = ws.bundle.schema
         if kind == POPULATION_TEST:

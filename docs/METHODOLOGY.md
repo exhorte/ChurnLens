@@ -55,7 +55,7 @@ No class weighting is used (see §4): probabilities stay interpretable as freque
 * **Rule `one_se`** (default): among models whose mean is within one standard error of the best, take the *simplest*.
   A more complex model has to earn its place; a small gap inside the fold-to-fold noise is not evidence. `best` takes
   the highest mean. The dummy baseline is never selectable.
-* **Result of the committed run** (`run-e11cad297794`): logistic regression, average precision 0.667 ± 0.020 (std over 5
+* **Result of the committed run** (identified by `run_id` in `models/metadata.json`): logistic regression, average precision 0.667 ± 0.020 (std over 5
   folds); random forest 0.661 ± 0.026, gradient boosting 0.664 ± 0.020, decision tree 0.611 ± 0.023, dummy 0.265.
   The top four are within noise of each other on this data; the simplest wins. See `reports/model_comparison.csv` and
   per-fold values in `reports/cv_folds.csv`.

@@ -55,5 +55,9 @@ def test_fingerprint_tracks_modelling_choices_not_paths():
     base = Config()
     other_paths = replace(base, paths=replace(base.paths, models_dir="elsewhere"))
     assert base.fingerprint() == other_paths.fingerprint()
+    other_economics = replace(base, economics=replace(base.economics, cost_per_contact=99.0))
+    assert base.fingerprint() == other_economics.fingerprint()      # simulator defaults do not change a model
+    other_split = replace(base, split=replace(base.split, random_state=7))
+    assert base.fingerprint() != other_split.fingerprint()
     other_model = replace(base, models=ModelsConfig(logistic_regression={"C": 0.1, "max_iter": 2000}))
     assert base.fingerprint() != other_model.fingerprint()

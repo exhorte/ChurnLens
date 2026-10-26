@@ -78,7 +78,7 @@ permutation · API FastAPI (prédiction unitaire et par lot) · Dockerfile de l'
 - Les messages d'erreur du pipeline sont ceux de scikit-learn : colonne manquante →
   `columns are missing: {'TenureSegment', 'tenure'}` (expose un nom de variable *dérivée*) ;
   `SeniorCitizen="Yes"` → `Cannot use median strategy with non-numeric data` [V].
-- Dockerfile jamais construit dans cet audit [H] (voir §10).
+- Dockerfile fonctionnel à l'origine [V] (voir §10), mais image inutilement lourde.
 
 ## 5. Problèmes de qualité du code
 
@@ -158,7 +158,10 @@ du prétraitement côté inférence. **À conserver.**
 - **Tests : aucun** [V] (`tests/` absent ; `conftest.py` ne sert à rien tant qu'il n'y a pas de test).
 - **CI : aucune** [V] (`.github/` absent). Le récit de `generate_pdf.py` mentionne pourtant une « performance gate » de CI qui n'existe pas.
 - **Lint** : non configuré ; ruff 0.17.2 avec ses règles par défaut remonte 61 alertes sur le code existant [V].
-- **Docker** : le CLI et le daemon répondent (v29.4.3) ; le Dockerfile n'a **pas** encore été construit — **[H]** « fonctionne », à vérifier. Observation par lecture : l'image installe `requirements.txt` en entier (Streamlit, Plotly, Matplotlib…) alors que l'API n'en a pas besoin.
+- **Docker** : [V] le Dockerfile **d'origine** a été construit à partir d'une extraction du commit `1da61ba` dans un
+  dossier temporaire (base `python:3.12-slim`, installation de tout le `requirements.txt` épinglé, image de 1,26 Go) ;
+  le conteneur démarre, `/health` répond `ok` et `/predict` renvoie une probabilité de 0,9375 pour l'exemple de la
+  documentation. Il fonctionnait donc. Observation : l'image installe Streamlit, Plotly, Matplotlib… dont l'API n'a pas besoin.
 
 ## 11. Dépendances inutiles ou redondantes
 
@@ -169,7 +172,7 @@ du prétraitement côté inférence. **À conserver.**
 | `pytest`, `httpx` | Dépendances de test dans le fichier d'exécution [V] | `requirements-dev.txt` |
 | `streamlit`, `plotly` dans l'image de l'API | Inutiles pour l'API [V par lecture] | `requirements-api.txt` pour l'image Docker |
 | `scipy`, `joblib` | Déjà tirées par scikit-learn ; `joblib` est importé directement : à garder déclarée | — |
-| Versions épinglées (`pandas==3.0.3`, `numpy==2.4.6`, `scikit-learn==1.8.0`…) | **[V]** Installées et fonctionnelles dans l'environnement vérifié (Python 3.14.5) ; le Dockerfile vise Python 3.12 [H non vérifié] | Garder les versions, tester l'installation dans un environnement vierge |
+| Versions épinglées (`pandas==3.0.3`, `numpy==2.4.6`, `scikit-learn==1.8.0`…) | **[V]** Fonctionnelles sous Python 3.14.5 (environnement vérifié) **et** sous Python 3.12 (le build Docker d'origine les installe sans erreur) | Garder les versions ; vérifier l'installation dans un environnement vierge |
 
 ## 12. Éléments à conserver
 
@@ -223,3 +226,34 @@ du prétraitement côté inférence. **À conserver.**
 **Hors périmètre de cette version** (comme demandé) : authentification, base de données, microservices,
 réentraînement planifié, SHAP (voir METHODOLOGY : dépendance non nécessaire ici, compatibilité
 Python 3.14 non vérifiée).
+
+---
+
+## Annexe — suivi après implémentation (2026-10-26)
+
+Rédigée à la fin du travail ; elle ne modifie pas l'audit ci-dessus, qui décrit l'état **avant** intervention.
+
+| Constat de l'audit | Suite donnée | Preuve |
+|---|---|---|
+| M1 probabilités gonflées par `class_weight` | Pondération supprimée ; calibration mesurée | moyenne prédite 0,2654 / observée 0,2654 (hors-pli) |
+| M2 seuil 0,5 en dur | Seuil recommandé sur prédictions hors-pli (F1) + analyse de seuils | `reports/threshold_analysis_validation.csv` |
+| M3/M4/M5 comparaison pauvre, 2 modèles | 5 modèles, plis identiques, 9 métriques, écart-type, critère configurable | `reports/model_comparison.csv`, `cv_folds.csv` |
+| M6/M7 variables dérivées fragiles | `TotalCharges = 0` si `tenure = 0`, liste explicite de services, `ContractMonths`, bornes ouvertes | `tests/test_preprocessing.py` |
+| L2 fuite non détectée en « votre CSV » | Écran d'identifiants / proxys de la cible, sur le split d'entraînement | `tests/test_data.py`, `test_training.py` |
+| C1–C4 contrat d'entrée dupliqué, seuil dupliqué, pickle non vérifié | Schéma unique sérialisé, seuil et segments dans les métadonnées, SHA-256 + version vérifiés | `tests/test_predictions.py`, `test_api.py` |
+| Q1–Q8 qualité | Paquet `churnguard`, configuration unique, `logging`, exceptions explicites, Ruff | `ruff check .` : aucune alerte |
+| Pas de tests / de CI | Suite de tests (données synthétiques étiquetées) ; workflow GitHub Actions | `pytest` : 228 réussis ; **CI non exécutée** (rien n'a été poussé) |
+| Dockerfile | Image API seule, utilisateur non privilégié ; construite et lancée sous Python 3.12 | `/health` ok, 651 Mo (contre 1,26 Go) |
+| G1 licence absente | `LICENSE` (copyright d'origine conservé) + `NOTICE.md` | — |
+| G2 CSV suivi par git, licence non vérifiée | `data/README.md`, CSV ignoré pour l'avenir | **Non résolu** : le fichier reste dans l'historique git (commit `1da61ba`) — décision à prendre avant toute publication |
+
+**Écarts et limites constatés en cours de route** (non anticipés dans l'audit) :
+
+- Le nouveau modèle score un peu moins bien que l'ancien sur le même test (ROC-AUC 0,842 contre 0,847 ; précision
+  moyenne 0,634 contre 0,665) ; la différence est dans le bruit d'un test de 1 409 lignes (intervalle de confiance à
+  95 % du ROC-AUC : 0,823–0,865). Rien n'a été ajusté vers le test.
+- Les quatre variables dérivées n'apportent pas de gain mesurable en validation croisée (précision moyenne 0,667 avec,
+  0,661 sans, écart-type ≈ 0,02) ; elles sont conservées par choix de réutilisation, sans revendiquer d'apport.
+- Un `run_id` purement numérique était relu comme un nombre par pandas (test intermittent) : préfixe `run-` ajouté.
+- Pendant la session, des commits ont été ajoutés au dépôt en parallèle (dont un `README.md` rédigé ailleurs) ; ce
+  README a été restauré à l'identique (voir HANDOFF).

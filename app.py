@@ -53,8 +53,8 @@ DEMO_LABEL, CUSTOM_LABEL = "Demo model (saved)", "Custom model (this session)"
 
 
 @st.cache_resource(show_spinner="Loading the saved model...")
-def _demo_workspace(stamp: float) -> Workspace:
-    """Cached per metadata.json modification time, so retraining invalidates it."""
+def _demo_workspace(models_dir: str, stamp: float) -> Workspace:
+    """Cached per model folder and metadata.json modification time, so retraining invalidates it."""
     return load_demo_workspace(load_config())
 
 
@@ -62,7 +62,7 @@ def _demo_or_error(config) -> tuple[Workspace | None, str | None]:
     metadata = config.models_dir / "metadata.json"
     stamp = metadata.stat().st_mtime if metadata.exists() else 0.0
     try:
-        return _demo_workspace(stamp), None
+        return _demo_workspace(str(config.models_dir), stamp), None
     except (ModelLoadError, DataValidationError) as exc:
         return None, str(exc)
 

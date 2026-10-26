@@ -14,6 +14,7 @@ from typing import Any
 
 import numpy as np
 import pandas as pd
+from scipy.stats import rankdata
 from sklearn.metrics import (
     accuracy_score,
     average_precision_score,
@@ -76,6 +77,27 @@ def compute_metrics(y_true, proba, threshold: float = 0.5) -> dict[str, float]:
 _BOOTSTRAPPABLE = ("roc_auc", "average_precision", "precision", "recall", "f1")
 
 
+def fast_roc_auc(y: np.ndarray, p: np.ndarray) -> float:
+    """ROC-AUC from average ranks (Mann-Whitney). Same value as sklearn, without per-call validation."""
+    positives = int(y.sum())
+    negatives = len(y) - positives
+    ranks = rankdata(p)
+    return float((ranks[y == 1].sum() - positives * (positives + 1) / 2) / (positives * negatives))
+
+
+def fast_average_precision(y: np.ndarray, p: np.ndarray) -> float:
+    """Average precision with tied scores grouped into one threshold, as in sklearn."""
+    order = np.argsort(-p, kind="stable")
+    ys, ps = y[order], p[order]
+    tps = np.cumsum(ys)
+    fps = np.cumsum(1 - ys)
+    last_of_each_score = np.r_[np.flatnonzero(np.diff(ps)), len(ys) - 1]
+    tps, fps = tps[last_of_each_score], fps[last_of_each_score]
+    precision = tps / (tps + fps)
+    recall = tps / tps[-1]
+    return float(np.sum(np.diff(np.r_[0.0, recall]) * precision))
+
+
 def _sample_metrics(y: np.ndarray, p: np.ndarray, threshold: float, metrics: tuple[str, ...]) -> dict[str, float]:
     """Only the requested metrics, computed cheaply (a bootstrap evaluates thousands of resamples)."""
     pred = p >= threshold
@@ -86,9 +108,9 @@ def _sample_metrics(y: np.ndarray, p: np.ndarray, threshold: float, metrics: tup
     out: dict[str, float] = {}
     for name in metrics:
         if name == "roc_auc":
-            out[name] = float(roc_auc_score(y, p))
+            out[name] = fast_roc_auc(y, p)
         elif name == "average_precision":
-            out[name] = float(average_precision_score(y, p))
+            out[name] = fast_average_precision(y, p)
         elif name == "precision":
             out[name] = precision
         elif name == "recall":

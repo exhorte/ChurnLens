@@ -1,7 +1,7 @@
 {
   "project": "ChurnGuard AI",
-  "run_id": "run-e11cad297794",
-  "trained_at": "2026-10-26T17:37:02+00:00",
+  "run_id": "run-76ceb0a12cea",
+  "trained_at": "2026-10-26T18:19:29+00:00",
   "model_key": "logistic_regression",
   "model": "Logistic Regression",
   "model_params": {
@@ -76,11 +76,11 @@
   "test_metrics_ci_95": {
     "roc_auc": [
       0.8225982159330228,
-      0.8646760025043602
+      0.86467600250436
     ],
     "average_precision": [
-      0.5836903083831705,
-      0.6891691109132461
+      0.5836903083831706,
+      0.689169110913246
     ],
     "precision": [
       0.49613709603867084,
@@ -92,7 +92,7 @@
     ],
     "f1": [
       0.5829243158831328,
-      0.6551829151869247
+      0.6551829151869246
     ]
   },
   "calibration_out_of_fold": {
@@ -400,7 +400,7 @@
     "split": 42,
     "cv": 42
   },
-  "config_fingerprint": "d26c1a441b99",
+  "config_fingerprint": "fc53bf7e6a6e",
   "environment": {
     "python": "3.14.5",
     "scikit_learn": "1.8.0",
