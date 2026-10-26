@@ -1,0 +1,42 @@
+{
+  "model": "Logistic Regression",
+  "trained_at": "2026-06-03T00:19:37",
+  "sklearn_version": "1.8.0",
+  "n_train": 5634,
+  "n_test": 1409,
+  "cv_roc_auc": 0.8508,
+  "test_metrics": {
+    "accuracy": 0.731,
+    "precision": 0.4958,
+    "recall": 0.7968,
+    "f1": 0.6113,
+    "roc_auc": 0.8472
+  },
+  "numeric_features": [
+    "tenure",
+    "MonthlyCharges",
+    "TotalCharges",
+    "SeniorCitizen",
+    "TotalServices",
+    "ContractRisk",
+    "ChargeRatio"
+  ],
+  "categorical_features": [
+    "gender",
+    "Partner",
+    "Dependents",
+    "PhoneService",
+    "PaperlessBilling",
+    "MultipleLines",
+    "InternetService",
+    "OnlineSecurity",
+    "OnlineBackup",
+    "DeviceProtection",
+    "TechSupport",
+    "StreamingTV",
+    "StreamingMovies",
+    "Contract",
+    "PaymentMethod",
+    "TenureSegment"
+  ]
+}

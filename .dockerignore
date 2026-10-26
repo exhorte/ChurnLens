@@ -1,0 +1,15 @@
+venv/
+.git/
+.github/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+data/
+notebooks/
+screenshots/
+docs/
+tests/
+*.md
+.streamlit/
+.DS_Store
