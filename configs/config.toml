@@ -1,0 +1,71 @@
+# ChurnGuard AI - run configuration.
+# Mirrors the defaults in src/churnguard/config.py (a test fails if they diverge).
+# Every value here is a documented methodological choice - see docs/METHODOLOGY.md.
+
+[paths]
+data_file = "data/WA_Fn-UseC_-_Telco_Customer_Churn.csv"
+models_dir = "models"
+reports_dir = "reports"
+
+[data]
+target = "Churn"
+positive_label = "Yes"
+id_column = "customerID"
+min_rows = 100
+min_minority = 10
+max_train_rows = 50000
+max_categories = 50
+leakage_auc = 0.98
+
+[split]
+test_size = 0.2        # final hold-out, used once, after model selection
+random_state = 42
+
+[cv]
+n_splits = 5           # stratified, shared by every model
+random_state = 42
+
+[selection]
+primary_metric = "average_precision"
+rule = "one_se"        # "best" or "one_se" (simplest model within 1 standard error of the best)
+
+[threshold]
+criterion = "f1"       # "f1", "f2" or "youden" - computed on out-of-fold TRAIN predictions
+default = 0.5
+
+[segments]
+low_below = 0.20       # Low < 0.20 <= Medium < 0.50 <= High (business convention)
+high_from = 0.50
+
+# Illustrative defaults for the retention simulator. They are NOT estimated from the data.
+[economics]
+cost_per_contact = 15.0
+value_per_retained_customer = 250.0
+success_rate = 0.20
+budget = 3000.0
+max_contacts = 500
+risk_threshold = 0.50
+top_k = 300
+
+# Fixed hyperparameters (no tuning in this version).
+[models.dummy]
+strategy = "prior"
+
+[models.logistic_regression]
+C = 1.0
+max_iter = 2000
+
+[models.decision_tree]
+max_depth = 5
+min_samples_leaf = 20
+
+[models.random_forest]
+n_estimators = 300
+max_depth = 12
+min_samples_leaf = 5
+
+[models.gradient_boosting]
+max_iter = 150
+learning_rate = 0.05
+max_leaf_nodes = 15
+l2_regularization = 1.0

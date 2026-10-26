@@ -1,0 +1,10 @@
+# Everything needed to run the tests and the linter.
+-r requirements.txt
+pytest==9.0.3
+httpx==0.28.1
+ruff==0.17.2
+
+# Optional, only to open/re-run the notebooks in notebooks/
+# matplotlib==3.10.9
+# seaborn==0.13.2
+# jupyterlab

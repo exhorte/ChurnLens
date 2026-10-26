@@ -1,42 +1,416 @@
 {
+  "project": "ChurnGuard AI",
+  "run_id": "run-e11cad297794",
+  "trained_at": "2026-10-26T17:37:02+00:00",
+  "model_key": "logistic_regression",
   "model": "Logistic Regression",
-  "trained_at": "2026-06-03T00:19:37",
-  "sklearn_version": "1.8.0",
-  "n_train": 5634,
-  "n_test": 1409,
-  "cv_roc_auc": 0.8508,
-  "test_metrics": {
-    "accuracy": 0.731,
-    "precision": 0.4958,
-    "recall": 0.7968,
-    "f1": 0.6113,
-    "roc_auc": 0.8472
+  "model_params": {
+    "C": 1.0,
+    "max_iter": 2000
   },
-  "numeric_features": [
-    "tenure",
-    "MonthlyCharges",
-    "TotalCharges",
-    "SeniorCitizen",
-    "TotalServices",
-    "ContractRisk",
-    "ChargeRatio"
+  "selection": {
+    "primary_metric": "average_precision",
+    "rule": "one_se",
+    "explanation": "Best mean CV average_precision (0.6672), and the simplest eligible model.",
+    "candidates": [
+      "dummy",
+      "logistic_regression",
+      "decision_tree",
+      "random_forest",
+      "gradient_boosting"
+    ]
+  },
+  "cv_scores_selected_model": {
+    "roc_auc_mean": 0.8479209311791378,
+    "roc_auc_std": 0.010262756049699064,
+    "average_precision_mean": 0.6671749925809164,
+    "average_precision_std": 0.020111075720418838,
+    "precision_mean": 0.6694697478554792,
+    "precision_std": 0.020770147466004363,
+    "recall_mean": 0.5331103678929766,
+    "recall_std": 0.02453126531223042,
+    "f1_mean": 0.5930536693627646,
+    "f1_std": 0.01344736104877626,
+    "balanced_accuracy_mean": 0.7188397933548031,
+    "balanced_accuracy_std": 0.009004623037177797,
+    "accuracy_mean": 0.8060003057520791,
+    "accuracy_std": 0.005728883957130468,
+    "log_loss_mean": 0.4141815988807556,
+    "log_loss_std": 0.01150818104720292,
+    "brier_score_mean": 0.1341754646877307,
+    "brier_score_std": 0.004262453577169486
+  },
+  "cv_folds": 5,
+  "threshold": {
+    "threshold": 0.33,
+    "criterion": "f1",
+    "score_on_validation": 0.640391254315305,
+    "description": "Threshold 0.33 maximises F1 (balance of precision and recall) on out-of-fold predictions of the training set (the test set is not used)."
+  },
+  "segments": {
+    "low_below": 0.2,
+    "high_from": 0.5
+  },
+  "test_metrics_at_recommended_threshold": {
+    "roc_auc": 0.8421788214627091,
+    "average_precision": 0.6343022099411059,
+    "precision": 0.5387673956262425,
+    "recall": 0.7245989304812834,
+    "f1": 0.6180159635119726,
+    "balanced_accuracy": 0.7502221705546515,
+    "accuracy": 0.7622427253371186,
+    "log_loss": 0.4197620046841353,
+    "brier_score": 0.13813145181980907
+  },
+  "test_metrics_at_threshold_0.5": {
+    "roc_auc": 0.8421788214627091,
+    "average_precision": 0.6343022099411059,
+    "precision": 0.6546052631578947,
+    "recall": 0.5320855614973262,
+    "f1": 0.5870206489675516,
+    "balanced_accuracy": 0.7153181430675037,
+    "accuracy": 0.801277501774308,
+    "log_loss": 0.4197620046841353,
+    "brier_score": 0.13813145181980907
+  },
+  "test_metrics_ci_95": {
+    "roc_auc": [
+      0.8225982159330228,
+      0.8646760025043602
+    ],
+    "average_precision": [
+      0.5836903083831705,
+      0.6891691109132461
+    ],
+    "precision": [
+      0.49613709603867084,
+      0.5816759875611426
+    ],
+    "recall": [
+      0.6807387862796834,
+      0.7731213075025811
+    ],
+    "f1": [
+      0.5829243158831328,
+      0.6551829151869247
+    ]
+  },
+  "calibration_out_of_fold": {
+    "mean_predicted": 0.2653754380676931,
+    "observed_rate": 0.2653532126375577,
+    "brier_score": 0.13417585812751584,
+    "expected_calibration_error": 0.010889778451934267
+  },
+  "target": {
+    "column": "Churn",
+    "positive_label": "Yes",
+    "negative_label": "No",
+    "label_inferred": false
+  },
+  "features": {
+    "raw_numeric": [
+      "SeniorCitizen",
+      "tenure",
+      "MonthlyCharges",
+      "TotalCharges"
+    ],
+    "raw_categorical": [
+      "gender",
+      "Partner",
+      "Dependents",
+      "PhoneService",
+      "MultipleLines",
+      "InternetService",
+      "OnlineSecurity",
+      "OnlineBackup",
+      "DeviceProtection",
+      "TechSupport",
+      "StreamingTV",
+      "StreamingMovies",
+      "Contract",
+      "PaperlessBilling",
+      "PaymentMethod"
+    ],
+    "engineer": true
+  },
+  "ignored_columns": {},
+  "screening_warnings": [],
+  "schema": [
+    {
+      "name": "SeniorCitizen",
+      "kind": "numeric",
+      "categories": [],
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "baseline": 0.0,
+      "non_negative": true,
+      "integer": true
+    },
+    {
+      "name": "tenure",
+      "kind": "numeric",
+      "categories": [],
+      "minimum": 0.0,
+      "maximum": 72.0,
+      "baseline": 29.0,
+      "non_negative": true,
+      "integer": true
+    },
+    {
+      "name": "MonthlyCharges",
+      "kind": "numeric",
+      "categories": [],
+      "minimum": 18.4,
+      "maximum": 118.75,
+      "baseline": 70.5,
+      "non_negative": true,
+      "integer": false
+    },
+    {
+      "name": "TotalCharges",
+      "kind": "numeric",
+      "categories": [],
+      "minimum": 18.85,
+      "maximum": 8684.8,
+      "baseline": 1398.125,
+      "non_negative": true,
+      "integer": false
+    },
+    {
+      "name": "gender",
+      "kind": "categorical",
+      "categories": [
+        "Female",
+        "Male"
+      ],
+      "minimum": null,
+      "maximum": null,
+      "baseline": "Male",
+      "non_negative": false,
+      "integer": false
+    },
+    {
+      "name": "Partner",
+      "kind": "categorical",
+      "categories": [
+        "No",
+        "Yes"
+      ],
+      "minimum": null,
+      "maximum": null,
+      "baseline": "No",
+      "non_negative": false,
+      "integer": false
+    },
+    {
+      "name": "Dependents",
+      "kind": "categorical",
+      "categories": [
+        "No",
+        "Yes"
+      ],
+      "minimum": null,
+      "maximum": null,
+      "baseline": "No",
+      "non_negative": false,
+      "integer": false
+    },
+    {
+      "name": "PhoneService",
+      "kind": "categorical",
+      "categories": [
+        "No",
+        "Yes"
+      ],
+      "minimum": null,
+      "maximum": null,
+      "baseline": "Yes",
+      "non_negative": false,
+      "integer": false
+    },
+    {
+      "name": "MultipleLines",
+      "kind": "categorical",
+      "categories": [
+        "No",
+        "No phone service",
+        "Yes"
+      ],
+      "minimum": null,
+      "maximum": null,
+      "baseline": "No",
+      "non_negative": false,
+      "integer": false
+    },
+    {
+      "name": "InternetService",
+      "kind": "categorical",
+      "categories": [
+        "DSL",
+        "Fiber optic",
+        "No"
+      ],
+      "minimum": null,
+      "maximum": null,
+      "baseline": "Fiber optic",
+      "non_negative": false,
+      "integer": false
+    },
+    {
+      "name": "OnlineSecurity",
+      "kind": "categorical",
+      "categories": [
+        "No",
+        "No internet service",
+        "Yes"
+      ],
+      "minimum": null,
+      "maximum": null,
+      "baseline": "No",
+      "non_negative": false,
+      "integer": false
+    },
+    {
+      "name": "OnlineBackup",
+      "kind": "categorical",
+      "categories": [
+        "No",
+        "No internet service",
+        "Yes"
+      ],
+      "minimum": null,
+      "maximum": null,
+      "baseline": "No",
+      "non_negative": false,
+      "integer": false
+    },
+    {
+      "name": "DeviceProtection",
+      "kind": "categorical",
+      "categories": [
+        "No",
+        "No internet service",
+        "Yes"
+      ],
+      "minimum": null,
+      "maximum": null,
+      "baseline": "No",
+      "non_negative": false,
+      "integer": false
+    },
+    {
+      "name": "TechSupport",
+      "kind": "categorical",
+      "categories": [
+        "No",
+        "No internet service",
+        "Yes"
+      ],
+      "minimum": null,
+      "maximum": null,
+      "baseline": "No",
+      "non_negative": false,
+      "integer": false
+    },
+    {
+      "name": "StreamingTV",
+      "kind": "categorical",
+      "categories": [
+        "No",
+        "No internet service",
+        "Yes"
+      ],
+      "minimum": null,
+      "maximum": null,
+      "baseline": "No",
+      "non_negative": false,
+      "integer": false
+    },
+    {
+      "name": "StreamingMovies",
+      "kind": "categorical",
+      "categories": [
+        "No",
+        "No internet service",
+        "Yes"
+      ],
+      "minimum": null,
+      "maximum": null,
+      "baseline": "No",
+      "non_negative": false,
+      "integer": false
+    },
+    {
+      "name": "Contract",
+      "kind": "categorical",
+      "categories": [
+        "Month-to-month",
+        "One year",
+        "Two year"
+      ],
+      "minimum": null,
+      "maximum": null,
+      "baseline": "Month-to-month",
+      "non_negative": false,
+      "integer": false
+    },
+    {
+      "name": "PaperlessBilling",
+      "kind": "categorical",
+      "categories": [
+        "No",
+        "Yes"
+      ],
+      "minimum": null,
+      "maximum": null,
+      "baseline": "Yes",
+      "non_negative": false,
+      "integer": false
+    },
+    {
+      "name": "PaymentMethod",
+      "kind": "categorical",
+      "categories": [
+        "Bank transfer (automatic)",
+        "Credit card (automatic)",
+        "Electronic check",
+        "Mailed check"
+      ],
+      "minimum": null,
+      "maximum": null,
+      "baseline": "Electronic check",
+      "non_negative": false,
+      "integer": false
+    }
   ],
-  "categorical_features": [
-    "gender",
-    "Partner",
-    "Dependents",
-    "PhoneService",
-    "PaperlessBilling",
-    "MultipleLines",
-    "InternetService",
-    "OnlineSecurity",
-    "OnlineBackup",
-    "DeviceProtection",
-    "TechSupport",
-    "StreamingTV",
-    "StreamingMovies",
-    "Contract",
-    "PaymentMethod",
-    "TenureSegment"
-  ]
+  "data": {
+    "file": "WA_Fn-UseC_-_Telco_Customer_Churn.csv",
+    "file_sha256": "16320c9c1ec72448db59aa0a26a0b95401046bef5d02fd3aeb906448e3055e91",
+    "frame_sha256": "489d91f67094e9da6d4333eec170fd7ae1f65b74e8942c6ab0c7527fbea4362e",
+    "rows": 7043,
+    "n_train": 5634,
+    "n_test": 1409,
+    "positive_rate": 0.2653698707936959,
+    "id_column": "customerID",
+    "notes": [
+      "'TotalCharges' is numeric stored as text: converted to numbers (11 blank and 0 non-numeric value(s) became missing)."
+    ]
+  },
+  "random_state": {
+    "split": 42,
+    "cv": 42
+  },
+  "config_fingerprint": "d26c1a441b99",
+  "environment": {
+    "python": "3.14.5",
+    "scikit_learn": "1.8.0",
+    "pandas": "3.0.3",
+    "numpy": "2.4.6",
+    "joblib": "1.5.3",
+    "churnguard": "0.1.0"
+  },
+  "artifact": {
+    "file": "churn_pipeline.pkl",
+    "sha256": "a6bc0e133127f1b94d5955633291bff22fa4f86a55f916de9ce2cdc36288d413"
+  }
 }

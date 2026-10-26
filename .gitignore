@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 *.egg-info/
 .pytest_cache/
+.ruff_cache/
 .ipynb_checkpoints/
 
 # Virtual environments
@@ -13,6 +14,14 @@ env/
 # OS / editor
 .DS_Store
 *.log
+.claude/
 
 # Local env vars
 .env
+
+# Data: the Telco CSV is not redistributed (licence not verified) - see data/README.md.
+# Any CSV (including exported predictions) stays local; only data/README.md is tracked.
+data/*
+!data/README.md
+*.csv
+!reports/*.csv

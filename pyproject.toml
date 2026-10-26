@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "churnguard"
+version = "0.1.0"
+description = "ChurnGuard AI - customer churn analysis: rigorous model comparison, error analysis, explainability and retention simulation."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { file = "LICENSE" }
+dependencies = [
+    "numpy>=2.0",
+    "pandas>=2.2",
+    "scikit-learn>=1.5",
+    "joblib>=1.4",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src", "."]
+addopts = "-q"
+filterwarnings = [
+    "error::sklearn.exceptions.ConvergenceWarning",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = ["venv", ".venv", "notebooks"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "BLE", "C4", "SIM", "RUF100"]
+ignore = ["SIM108"]
+
+[tool.ruff.lint.per-file-ignores]
+# Entry points put ./src on sys.path so the project runs without `pip install -e .`.
+"app.py" = ["E402"]
+"train_model.py" = ["E402"]
+"service/main.py" = ["E402"]
+"ui/*.py" = ["E402"]
+"tests/*.py" = ["E402"]

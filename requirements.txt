@@ -1,18 +1,15 @@
-# Pinned to versions verified to run this project (Python 3.11+; tested on 3.14).
-# Models are serialized with this scikit-learn version — keep it in sync to load them.
-pandas==3.0.3
+# Runtime dependencies of the Streamlit app and the training script.
+# Exact versions verified together (see README "Installation"). Python >= 3.11.
+# The model is a pickle: it only loads with the scikit-learn version it was trained with.
 numpy==2.4.6
+pandas==3.0.3
 scikit-learn==1.8.0
-matplotlib==3.10.9
-seaborn==0.13.2
+joblib==1.5.3
+threadpoolctl==3.7.0
 plotly==6.7.0
 streamlit==1.57.0
-joblib==1.5.3
 
-# API service
+# Scoring API (service/main.py)
 fastapi==0.136.3
+pydantic==2.14.1
 uvicorn==0.48.0
-
-# Dev / test
-pytest==9.0.3
-httpx==0.28.1

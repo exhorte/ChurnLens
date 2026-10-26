@@ -1,0 +1,9 @@
+# Minimal runtime for the scoring API (used by the Docker image): no Streamlit, no Plotly.
+numpy==2.4.6
+pandas==3.0.3
+scikit-learn==1.8.0
+joblib==1.5.3
+threadpoolctl==3.7.0
+fastapi==0.136.3
+pydantic==2.14.1
+uvicorn==0.48.0

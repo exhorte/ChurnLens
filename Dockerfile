@@ -1,20 +1,27 @@
-# Container image for the FastAPI scoring service.
+# Container image for the ChurnGuard scoring API (service/main.py).
+# Build:  docker build -t churnguard-api .
+# Run:    docker run --rm -p 8000:8000 churnguard-api   ->   http://localhost:8000/docs
 FROM python:3.12-slim
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
-    PIP_NO_CACHE_DIR=1
+    PIP_NO_CACHE_DIR=1 \
+    CHURNGUARD_MODELS_DIR=/app/models
 
 WORKDIR /app
 
-# Install dependencies first for better layer caching.
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+# Install dependencies first for better layer caching (API only: no Streamlit/Plotly).
+COPY requirements-api.txt ./
+RUN pip install --no-cache-dir -r requirements-api.txt
 
-# Copy only what the API needs to serve.
+# Only what the API needs to serve. The model is a pickle: build the image from a model you trained.
 COPY src ./src
 COPY service ./service
 COPY models ./models
+
+# Run as an unprivileged user.
+RUN useradd --create-home --uid 10001 churn && chown -R churn /app
+USER churn
 
 EXPOSE 8000
 
