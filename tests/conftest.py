@@ -17,10 +17,10 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from churnguard.config import Config, ModelsConfig, load_config
-from churnguard.data import PreparedData, prepare_dataset
-from churnguard.preprocessing import CONTRACT_MONTHS, SERVICE_COLUMNS
-from churnguard.training import ExperimentResult, run_experiment
+from churnlens.config import Config, ModelsConfig, load_config
+from churnlens.data import PreparedData, prepare_dataset
+from churnlens.preprocessing import CONTRACT_MONTHS, SERVICE_COLUMNS
+from churnlens.training import ExperimentResult, run_experiment
 
 
 def make_generic_df(n: int = 600, seed: int = 0) -> pd.DataFrame:

@@ -5,7 +5,7 @@ from datetime import UTC, datetime
 
 import streamlit as st
 
-from churnguard.predictions import build_export
+from churnlens.predictions import build_export
 
 from .common import NOT_A_GUARANTEE, notices
 from .context import AppContext
@@ -32,7 +32,7 @@ def render(ctx: AppContext) -> None:
     st.dataframe(export.head(200), hide_index=True, width="stretch")
     stamp = datetime.now(UTC).strftime("%Y%m%d")
     st.download_button("Download predictions (CSV)", export.to_csv(index=False).encode("utf-8"),
-                       file_name=f"churnguard_predictions_{stamp}.csv", mime="text/csv", type="primary")
+                       file_name=f"churnlens_predictions_{stamp}.csv", mime="text/csv", type="primary")
     st.caption("Columns: customer_id, id_type, churn_probability, predicted_churn, predicted_label, "
                "risk_segment, decision_threshold, model, model_trained_at, scored_at. The CSV may contain "
                "customer identifiers: handle it according to your data-protection rules.")

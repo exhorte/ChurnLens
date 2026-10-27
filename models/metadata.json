@@ -1,7 +1,7 @@
 {
-  "project": "ChurnGuard AI",
-  "run_id": "run-76ceb0a12cea",
-  "trained_at": "2026-10-26T18:19:29+00:00",
+  "project": "ChurnLens",
+  "run_id": "run-53c3c1f48b5b",
+  "trained_at": "2026-10-27T08:44:14+00:00",
   "model_key": "logistic_regression",
   "model": "Logistic Regression",
   "model_params": {
@@ -407,10 +407,10 @@
     "pandas": "3.0.3",
     "numpy": "2.4.6",
     "joblib": "1.5.3",
-    "churnguard": "0.1.0"
+    "churnlens": "0.1.0"
   },
   "artifact": {
     "file": "churn_pipeline.pkl",
-    "sha256": "a6bc0e133127f1b94d5955633291bff22fa4f86a55f916de9ce2cdc36288d413"
+    "sha256": "e4e8adbe42af495c57d63ab844f9169af440d46bc4d56649c8b3fc2e4104bd06"
   }
 }

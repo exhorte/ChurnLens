@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from churnguard.evaluation import (
+from churnlens.evaluation import (
     ALL_METRICS,
     SegmentRule,
     assign_segments,

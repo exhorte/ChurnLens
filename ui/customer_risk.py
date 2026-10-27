@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import streamlit as st
 
-from churnguard.data import DataValidationError
+from churnlens.data import DataValidationError
 
 from .common import NOT_A_GUARANTEE, local_explanation_view, notices, pct
 from .context import AppContext

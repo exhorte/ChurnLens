@@ -9,8 +9,8 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from churnguard.config import Config
-from churnguard.data import (
+from churnlens.config import Config
+from churnlens.data import (
     POSITIVE_TOKENS,
     ColumnRoles,
     DataValidationError,
@@ -19,7 +19,7 @@ from churnguard.data import (
     prepare_target,
     standardize_frame,
 )
-from churnguard.training import run_experiment
+from churnlens.training import run_experiment
 
 from .workspace import Workspace, workspace_from_experiment
 

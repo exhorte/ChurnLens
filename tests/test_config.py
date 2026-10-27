@@ -2,7 +2,7 @@ from dataclasses import replace
 
 import pytest
 
-from churnguard.config import Config, ConfigError, ModelsConfig, load_config
+from churnlens.config import Config, ConfigError, ModelsConfig, load_config
 
 
 def test_toml_file_mirrors_dataclass_defaults():

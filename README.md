@@ -6,8 +6,6 @@ ChurnLens is an open-source customer churn analytics project that brings togethe
 
 The project is an analytical and educational tool—not a production-ready decision system, a causal model, or a guarantee that a retention campaign will work.
 
-> **Project naming:** This repository is presented as **ChurnLens**. The current application and API still use the inherited **ChurnGuard AI** label in some screens and responses, and the Python package is named `churnguard`.
-
 ## At a glance
 
 - **Interactive app:** nine Streamlit sections for data exploration, model evaluation, customer risk, error analysis, explanations, retention scenarios, and exports.
@@ -155,7 +153,7 @@ Interactive API documentation is available at `http://127.0.0.1:8000/docs`.
 | `POST /predict` | Score one customer. |
 | `POST /predict/batch` | Score up to 1,000 customers in one request. |
 
-The request contract is generated from the schema saved with the model. The API returns churn probability, predicted class, risk segment, applied threshold, and model label. The default CORS policy allows no cross-origin browser origins; configure `CHURNGUARD_CORS_ORIGINS` only for the origins you intend to permit. Set `CHURNGUARD_MODELS_DIR` to use a different model directory.
+The request contract is generated from the schema saved with the model. The API returns churn probability, predicted class, risk segment, applied threshold, and model label. The default CORS policy allows no cross-origin browser origins; configure `CHURNLENS_CORS_ORIGINS` only for the origins you intend to permit. Set `CHURNLENS_MODELS_DIR` to use a different model directory.
 
 ### Docker
 
@@ -174,7 +172,7 @@ The container includes the model artifacts present at build time. Use only model
 .
 ├── app.py                       Streamlit entry point
 ├── service/                     FastAPI scoring service
-├── src/churnguard/              Data, schema, pipeline, training, scoring, and analysis
+├── src/churnlens/              Data, schema, pipeline, training, scoring, and analysis
 ├── ui/                          Streamlit pages and shared UI logic
 ├── configs/config.toml          Reproducible modelling and simulation settings
 ├── models/                      Saved model and metadata

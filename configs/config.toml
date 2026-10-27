@@ -1,5 +1,5 @@
-# ChurnGuard AI - run configuration.
-# Mirrors the defaults in src/churnguard/config.py (a test fails if they diverge).
+# ChurnLens - run configuration.
+# Mirrors the defaults in src/churnlens/config.py (a test fails if they diverge).
 # Every value here is a documented methodological choice - see docs/METHODOLOGY.md.
 
 [paths]

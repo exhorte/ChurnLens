@@ -3,8 +3,8 @@ import pandas as pd
 import pytest
 from fastapi.testclient import TestClient
 
-from churnguard.predictions import load_bundle, score_frame
-from churnguard.training import PIPELINE_FILE, save_experiment
+from churnlens.predictions import load_bundle, score_frame
+from churnlens.training import PIPELINE_FILE, save_experiment
 from service.main import MAX_BATCH, create_app
 
 
@@ -135,11 +135,11 @@ def test_cross_origin_calls_are_refused_unless_configured(models_dir, monkeypatc
     headers = {"Origin": "https://example.org", "Access-Control-Request-Method": "POST"}
     default = TestClient(create_app(models_dir)).options("/predict", headers=headers)
     assert "access-control-allow-origin" not in default.headers
-    monkeypatch.setenv("CHURNGUARD_CORS_ORIGINS", "https://example.org")
+    monkeypatch.setenv("CHURNLENS_CORS_ORIGINS", "https://example.org")
     allowed = TestClient(create_app(models_dir)).options("/predict", headers=headers)
     assert allowed.headers.get("access-control-allow-origin") == "https://example.org"
 
 
 def test_models_dir_can_be_set_by_environment(models_dir, monkeypatch):
-    monkeypatch.setenv("CHURNGUARD_MODELS_DIR", str(models_dir))
+    monkeypatch.setenv("CHURNLENS_MODELS_DIR", str(models_dir))
     assert TestClient(create_app()).get("/health").json()["status"] == "ok"

@@ -13,7 +13,7 @@ from dataclasses import asdict, dataclass, field, fields, is_dataclass
 from pathlib import Path
 from typing import Any
 
-# src/churnguard/config.py -> parents[2] is the project root (the folder holding src/).
+# src/churnlens/config.py -> parents[2] is the project root (the folder holding src/).
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_CONFIG_PATH = PROJECT_ROOT / "configs" / "config.toml"
 

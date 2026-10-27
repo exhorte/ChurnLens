@@ -4,8 +4,8 @@ from __future__ import annotations
 import plotly.graph_objects as go
 import streamlit as st
 
-from churnguard.data import DataProfile, DataValidationError, read_csv
-from churnguard.pipeline import MODEL_REGISTRY
+from churnlens.data import DataProfile, DataValidationError, read_csv
+from churnlens.pipeline import MODEL_REGISTRY
 
 from .common import BLUE, GREEN, HISTORICAL_RATE_NOTE, RED, base_layout, notices, pct
 from .context import AppContext

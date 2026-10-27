@@ -35,10 +35,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build the API image
-        run: docker build -t churnguard-api .
+        run: docker build -t churnlens-api .
       - name: Smoke test
         run: |
-          docker run -d --name api -p 8000:8000 churnguard-api
+          docker run -d --name api -p 8000:8000 churnlens-api
           for i in $(seq 1 20); do curl -fs http://localhost:8000/health && break || sleep 2; done
           curl -fs http://localhost:8000/health | grep '"model_loaded":true'
           docker rm -f api

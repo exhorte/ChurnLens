@@ -4,10 +4,10 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from churnguard.config import SelectionConfig
-from churnguard.data import prepare_dataset
-from churnguard.evaluation import ALL_METRICS, compute_metrics, recommend_threshold
-from churnguard.training import (
+from churnlens.config import SelectionConfig
+from churnlens.data import prepare_dataset
+from churnlens.evaluation import ALL_METRICS, compute_metrics, recommend_threshold
+from churnlens.training import (
     compare_models_cv,
     make_cv,
     run_experiment,
@@ -163,7 +163,7 @@ def test_model_selection_ignores_test_labels_and_is_reproducible(generic_prepare
     flipped_y.iloc[test] = 1 - flipped_y.iloc[test]
     poisoned = replace(generic_prepared, y=flipped_y)
     # keep the very same split (it is stratified on y, which we just altered)
-    monkeypatch.setattr("churnguard.training.split_indices", lambda y, cfg: (train, test))
+    monkeypatch.setattr("churnlens.training.split_indices", lambda y, cfg: (train, test))
     flipped = run_experiment(poisoned, fast_config, model_keys=QUICK)
 
     stable = [c for c in first.comparison.columns if not c.startswith(TIME_COLUMNS)]

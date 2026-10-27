@@ -1,6 +1,6 @@
 # Retention simulator — formulas, assumptions, limits
 
-The simulator (`src/churnguard/retention_simulator.py`, page *Retention Simulator*) compares retention-campaign
+The simulator (`src/churnlens/retention_simulator.py`, page *Retention Simulator*) compares retention-campaign
 strategies **under assumptions you enter**. It is a scenario calculator. It is **not** a forecast, a measurement of
 benefit, or evidence that any campaign works.
 

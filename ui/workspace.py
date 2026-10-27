@@ -15,17 +15,17 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from churnguard.config import Config
-from churnguard.data import (
+from churnlens.config import Config
+from churnlens.data import (
     DatasetNotFoundError,
     DataValidationError,
     PreparedData,
     load_demo_dataset,
     prepare_dataset,
 )
-from churnguard.predictions import ModelBundle, ScoredFrame, bundle_from_experiment, load_bundle, score_frame
-from churnguard.schema import require_valid, validate_features
-from churnguard.training import ExperimentResult
+from churnlens.predictions import ModelBundle, ScoredFrame, bundle_from_experiment, load_bundle, score_frame
+from churnlens.schema import require_valid, validate_features
+from churnlens.training import ExperimentResult
 
 POPULATION_TEST = "Held-out test customers (unseen during training)"
 POPULATION_ALL = "All customers of the dataset (includes training customers)"

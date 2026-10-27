@@ -85,7 +85,7 @@ permutation · API FastAPI (prédiction unitaire et par lot) · Dockerfile de l'
 | # | Fichier | Constat | Conséquence | Correction |
 |---|---|---|---|---|
 | Q1 | `src/config.py`, `train_model.py` | `config.py` n'est importé par personne (hors `__init__`) ; `train_model.py` redéfinit `RANDOM_STATE`, `CV_FOLDS`, chemins. `PRIMARY_METRIC='f1'` et `METRIC_THRESHOLD=0.55` contredisent le code (sélection sur ROC-AUC) [V] | Deux sources de vérité, configuration trompeuse | Une seule configuration (`configs/config.toml` + `config.py`) réellement utilisée |
-| Q2 | `app.py`, `service/main.py`, `train_model.py` | `sys.path.insert(...)` pour importer `src` ; paquet nommé `src` (nom générique et fragile) [V] | Imports dépendants du répertoire courant | Vrai paquet `churnguard` (`pyproject.toml`) |
+| Q2 | `app.py`, `service/main.py`, `train_model.py` | `sys.path.insert(...)` pour importer `src` ; paquet nommé `src` (nom générique et fragile) [V] | Imports dépendants du répertoire courant | Vrai paquet `churnlens` (`pyproject.toml`) |
 | Q3 | `app.py` | Monolithe de 704 lignes ; chemins relatifs (`'models/churn_pipeline.pkl'`) qui exigent d'être lancé depuis la racine ; listes de choix et bornes des formulaires écrites en dur [V] | Divergence possible avec le modèle (voir §9) | Pages séparées, chemins issus de la configuration |
 | Q4 | `train_model.py`, `app.py`, `automl.py` | `except Exception` larges (3 occurrences) ; messages par `print` avec émojis [V] | Erreurs masquées, pas de journalisation exploitable | Exceptions explicites (`DataValidationError`…), `logging` |
 | Q5 | `data_loader.validate_data` | Renvoie un booléen que `train_model.py` **ignore** [V] | Une validation qui échoue n'arrête rien | Validation qui lève une exception |
@@ -188,7 +188,7 @@ du prétraitement côté inférence. **À conserver.**
 
 | Élément | Modification |
 |---|---|
-| `src/` (paquet générique) | → paquet `churnguard` ; modules `data`, `schema`, `preprocessing`, `pipeline`, `training`, `evaluation`, `predictions`, `error_analysis`, `explainability`, `retention_simulator`, `config` |
+| `src/` (paquet générique) | → paquet `churnlens` ; modules `data`, `schema`, `preprocessing`, `pipeline`, `training`, `evaluation`, `predictions`, `error_analysis`, `explainability`, `retention_simulator`, `config` |
 | `train_model.py` | Entraînement de 5 modèles, CV par pli, sélection configurable, seuil, rapports et métadonnées reproductibles |
 | `app.py` | Routeur Streamlit + 9 pages (Dashboard … Model Card) ; chemins et schéma issus des artefacts |
 | `service/main.py` | Modèle d'entrée dérivé du schéma sauvegardé, seuil et bandes lus dans les métadonnées, vérification d'intégrité, erreurs claires, tests |
@@ -210,7 +210,7 @@ du prétraitement côté inférence. **À conserver.**
 
 | Étape | Contenu | Dépend de | Priorité |
 |---|---|---|---|
-| E1 | Socle : paquet `churnguard`, configuration, `schema`, `data` (validation et profil), licence et notice | — | P1 |
+| E1 | Socle : paquet `churnlens`, configuration, `schema`, `data` (validation et profil), licence et notice | — | P1 |
 | E2 | `preprocessing` / `pipeline` (variables dérivées corrigées, 5 modèles) | E1 | P1 |
 | E3 | `evaluation` (métriques, seuils, calibration) et `training` (CV, sélection, OOF, test unique, artefacts) ; `train_model.py` | E2 | P1 |
 | E4 | `predictions` (bundle, intégrité, scoring, export) | E3 | P1 |
@@ -241,7 +241,7 @@ Rédigée à la fin du travail ; elle ne modifie pas l'audit ci-dessus, qui déc
 | M6/M7 variables dérivées fragiles | `TotalCharges = 0` si `tenure = 0`, liste explicite de services, `ContractMonths`, bornes ouvertes | `tests/test_preprocessing.py` |
 | L2 fuite non détectée en « votre CSV » | Écran d'identifiants / proxys de la cible, sur le split d'entraînement | `tests/test_data.py`, `test_training.py` |
 | C1–C4 contrat d'entrée dupliqué, seuil dupliqué, pickle non vérifié | Schéma unique sérialisé, seuil et segments dans les métadonnées, SHA-256 + version vérifiés | `tests/test_predictions.py`, `test_api.py` |
-| Q1–Q8 qualité | Paquet `churnguard`, configuration unique, `logging`, exceptions explicites, Ruff | `ruff check .` : aucune alerte |
+| Q1–Q8 qualité | Paquet `churnlens`, configuration unique, `logging`, exceptions explicites, Ruff | `ruff check .` : aucune alerte |
 | Pas de tests / de CI | Suite de tests (données synthétiques étiquetées) ; workflow GitHub Actions | `pytest` : 228 réussis ; **CI non exécutée** (rien n'a été poussé) |
 | Dockerfile | Image API seule, utilisateur non privilégié ; construite et lancée sous Python 3.12 | `/health` ok, 651 Mo (contre 1,26 Go) |
 | G1 licence absente | `LICENSE` (copyright d'origine conservé) + `NOTICE.md` | — |

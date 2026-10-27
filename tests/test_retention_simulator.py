@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from churnguard.retention_simulator import (
+from churnlens.retention_simulator import (
     Assumptions,
     SimulationInputError,
     break_even_probability,

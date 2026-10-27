@@ -15,10 +15,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 import numpy as np
 import pandas as pd
 
-from churnguard.config import load_config
-from churnguard.data import DatasetNotFoundError, load_demo_dataset, prepare_dataset
-from churnguard.predictions import load_bundle
-from churnguard.training import run_experiment, save_experiment
+from churnlens.config import load_config
+from churnlens.data import DatasetNotFoundError, load_demo_dataset, prepare_dataset
+from churnlens.predictions import load_bundle
+from churnlens.training import run_experiment, save_experiment
 
 TIME_COLUMNS = ("fit_time_s", "score_time_s")
 

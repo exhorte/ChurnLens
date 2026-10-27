@@ -1,4 +1,4 @@
-"""Train, compare and persist the ChurnGuard demo model on the Telco dataset.
+"""Train, compare and persist the ChurnLens demo model on the Telco dataset.
 
     python train_model.py                      # defaults from configs/config.toml
     python train_model.py --no-engineer        # without the Telco feature engineering
@@ -16,8 +16,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent / "src"))
 
 import pandas as pd
 
-from churnguard.config import ConfigError, load_config
-from churnguard.data import (
+from churnlens.config import ConfigError, load_config
+from churnlens.data import (
     DatasetNotFoundError,
     DataValidationError,
     load_demo_dataset,
@@ -25,7 +25,7 @@ from churnguard.data import (
     read_csv,
     verify_demo_dataset,
 )
-from churnguard.training import run_experiment, save_experiment
+from churnlens.training import run_experiment, save_experiment
 
 logger = logging.getLogger("train_model")
 

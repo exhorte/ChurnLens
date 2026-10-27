@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from churnguard.data import (
+from churnlens.data import (
     DatasetNotFoundError,
     DataValidationError,
     infer_roles,

@@ -3,8 +3,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from churnguard.data import DataValidationError
-from churnguard.predictions import score_frame
+from churnlens.data import DataValidationError
+from churnlens.predictions import score_frame
 from ui.train_panel import (
     preview_roles,
     suggest_id_column,

@@ -2,8 +2,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from churnguard.data import DataValidationError
-from churnguard.schema import DataSchema, infer_schema, require_valid, validate_features
+from churnlens.data import DataValidationError
+from churnlens.schema import DataSchema, infer_schema, require_valid, validate_features
 
 
 @pytest.fixture

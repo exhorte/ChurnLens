@@ -1,7 +1,7 @@
 # Methodology
 
 How models are built, compared and evaluated, and why. Everything here is implemented in
-`src/churnguard/` and exercised by `tests/`. Configuration lives in [`configs/config.toml`](../configs/config.toml).
+`src/churnlens/` and exercised by `tests/`. Configuration lives in [`configs/config.toml`](../configs/config.toml).
 
 ## 1. Protocol
 
@@ -71,7 +71,7 @@ threshold is applied only to the selected model's final evaluation.
 
 The starting repository trained with `class_weight="balanced"`. On its held-out test set that model's mean predicted
 churn probability was **0.413 while the observed churn rate was 0.265**: its scores inflated risk by about 55 %, so
-any sum of probabilities (expected churners, expected benefit) would have been biased. ChurnGuard trains without
+any sum of probabilities (expected churners, expected benefit) would have been biased. ChurnLens trains without
 class weights and checks calibration: on out-of-fold training predictions the selected model's mean predicted
 probability is **0.2654 vs 0.2654 observed**, expected calibration error 0.011, Brier score 0.134. The risk segments
 confirm it on the test set (Low 6.6 %, Medium 33.5 %, High 65.5 % observed churn for mean predicted 6.5 %, 34.1 %,
@@ -106,7 +106,7 @@ At threshold 0.5 the same model has precision 0.655, recall 0.532, F1 0.587. The
 the IBM sample data; they are not guarantees for any company's customers.
 
 **Comparison with the starting repository.** On the same split, its saved model scored ROC-AUC 0.847 and average
-precision 0.665 (recomputed during the audit). ChurnGuard's 0.842 / 0.634 are slightly lower. Differences of this
+precision 0.665 (recomputed during the audit). ChurnLens's 0.842 / 0.634 are slightly lower. Differences of this
 size are within what a 1 409-row test set can produce (see the intervals), nothing was tuned towards the test set,
 and the numbers are reported as they came out.
 

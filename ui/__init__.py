@@ -1,1 +1,1 @@
-"""Streamlit pages for ChurnGuard AI (the ML logic lives in src/churnguard)."""
+"""Streamlit pages for ChurnLens (the ML logic lives in src/churnlens)."""

@@ -1,4 +1,4 @@
-"""ChurnGuard AI - customer churn analysis.
+"""ChurnLens - customer churn analysis.
 
 Rigorous model comparison, threshold and error analysis, explainability and a retention
 economics simulator. Derived from https://github.com/infabuilds/customer-churn-prediction

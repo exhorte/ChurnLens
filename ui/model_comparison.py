@@ -5,7 +5,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-from churnguard.evaluation import ALL_METRICS, LOWER_IS_BETTER, calibration_summary
+from churnlens.evaluation import ALL_METRICS, LOWER_IS_BETTER, calibration_summary
 
 from .common import BLUE, GREY, NOT_A_GUARANTEE, base_layout, num, pct
 from .context import AppContext

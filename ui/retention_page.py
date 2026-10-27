@@ -4,7 +4,7 @@ from __future__ import annotations
 import plotly.graph_objects as go
 import streamlit as st
 
-from churnguard.retention_simulator import (
+from churnlens.retention_simulator import (
     Assumptions,
     SimulationInputError,
     break_even_probability,

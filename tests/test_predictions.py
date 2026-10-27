@@ -6,15 +6,15 @@ import pandas as pd
 import pytest
 import sklearn
 
-from churnguard.data import DataValidationError
-from churnguard.predictions import (
+from churnlens.data import DataValidationError
+from churnlens.predictions import (
     ModelLoadError,
     build_export,
     bundle_from_experiment,
     load_bundle,
     score_frame,
 )
-from churnguard.training import METADATA_FILE, PIPELINE_FILE, save_experiment
+from churnlens.training import METADATA_FILE, PIPELINE_FILE, save_experiment
 
 
 @pytest.fixture(scope="module")
@@ -165,6 +165,16 @@ def test_reports_are_written_with_run_metadata(saved, generic_experiment):
     test_eval = pd.read_csv(reports / "test_evaluation.csv")
     assert len(test_eval) == 2 and test_eval["score_source"].str.contains("test set").all()
     assert len(pd.read_csv(reports / "oof_predictions.csv")) == len(generic_experiment.train_index)
+
+
+def test_saved_reports_never_contain_customer_identifiers(saved, generic_experiment):
+    """Identifiers belong to the dataset, not to the results: reports keep the row position only."""
+    _, reports, _ = saved
+    assert "customer_id" in generic_experiment.test_predictions.columns     # still available in memory
+    for name in ("test_predictions.csv", "oof_predictions.csv"):
+        report = pd.read_csv(reports / name)
+        assert "customer_id" not in report.columns and "row" in report.columns
+        assert not report.astype(str).apply(lambda col: col.str.startswith("C000")).any().any()
 
 
 # ------------------------------------------------------------------- safe loading

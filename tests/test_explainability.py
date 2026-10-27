@@ -5,15 +5,15 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from churnguard.explainability import (
+from churnlens.explainability import (
     ASSOCIATION_NOTICE,
     explain_prediction,
     is_linear,
     native_importance,
     permutation_importance_table,
 )
-from churnguard.pipeline import build_pipeline, candidate_estimators, encoded_feature_table
-from churnguard.schema import require_valid
+from churnlens.pipeline import build_pipeline, candidate_estimators, encoded_feature_table
+from churnlens.schema import require_valid
 
 
 @pytest.fixture(scope="module")

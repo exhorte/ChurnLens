@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import streamlit as st
 
-from churnguard.evaluation import SegmentRule, segment_summary
+from churnlens.evaluation import SegmentRule, segment_summary
 
 from .common import (
     HISTORICAL_RATE_NOTE,

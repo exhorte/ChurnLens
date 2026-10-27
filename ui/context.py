@@ -10,8 +10,8 @@ import streamlit as st
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from churnguard.config import Config
-from churnguard.data import DataValidationError
+from churnlens.config import Config
+from churnlens.data import DataValidationError
 
 from .workspace import Population, PopulationUnavailableError, Workspace, population_for
 

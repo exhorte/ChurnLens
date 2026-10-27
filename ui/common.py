@@ -11,7 +11,7 @@ import streamlit as st
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from churnguard.explainability import ASSOCIATION_NOTICE, LocalExplanation, explain_prediction
+from churnlens.explainability import ASSOCIATION_NOTICE, LocalExplanation, explain_prediction
 
 SEGMENT_COLORS = {"Low": "#2e9e6b", "Medium": "#e8a33d", "High": "#d64545"}
 BLUE, GREY, RED, GREEN = "#2f6fb3", "#8a94a3", "#d64545", "#2e9e6b"

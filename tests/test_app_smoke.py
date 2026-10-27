@@ -84,7 +84,7 @@ def test_error_analysis_exposes_false_negatives_and_positives():
 
 
 def test_without_a_model_the_app_explains_how_to_get_one(tmp_path, monkeypatch):
-    monkeypatch.setattr("churnguard.config.PROJECT_ROOT", tmp_path)
+    monkeypatch.setattr("churnlens.config.PROJECT_ROOT", tmp_path)
     at = streamlit_testing.AppTest.from_file(str(ROOT / "app.py"), default_timeout=60)
     at.run()
     at.session_state["page"] = "Dashboard"
@@ -99,7 +99,7 @@ def test_without_the_csv_every_page_still_renders_and_explains_what_to_do(tmp_pa
 
     shutil.copytree(ROOT / "models", tmp_path / "models")
     shutil.copytree(ROOT / "reports", tmp_path / "reports")
-    monkeypatch.setattr("churnguard.config.PROJECT_ROOT", tmp_path)      # no data/ folder there
+    monkeypatch.setattr("churnlens.config.PROJECT_ROOT", tmp_path)      # no data/ folder there
     for page in PAGES:
         at = streamlit_testing.AppTest.from_file(str(ROOT / "app.py"), default_timeout=120)
         at.run()

@@ -4,7 +4,7 @@ from __future__ import annotations
 import plotly.graph_objects as go
 import streamlit as st
 
-from churnguard.error_analysis import (
+from churnlens.error_analysis import (
     OUTCOMES,
     classify_outcomes,
     compare_groups,
@@ -12,7 +12,7 @@ from churnguard.error_analysis import (
     error_metrics,
     error_profile,
 )
-from churnguard.evaluation import threshold_table
+from churnlens.evaluation import threshold_table
 
 from .common import BLUE, GREEN, GREY, RED, base_layout, confusion_heatmap, pct, probability_histogram
 from .context import AppContext

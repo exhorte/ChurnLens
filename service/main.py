@@ -7,8 +7,8 @@ the schema stored in ``models/metadata.json`` - there is no second, hand-written
     uvicorn service.main:app --reload        # then open http://127.0.0.1:8000/docs
 
 Environment:
-    CHURNGUARD_MODELS_DIR    folder holding churn_pipeline.pkl + metadata.json (default: ./models)
-    CHURNGUARD_CORS_ORIGINS  comma-separated origins allowed to call the API from a browser
+    CHURNLENS_MODELS_DIR    folder holding churn_pipeline.pkl + metadata.json (default: ./models)
+    CHURNLENS_CORS_ORIGINS  comma-separated origins allowed to call the API from a browser
                              (default: none - cross-origin browser calls are refused)
 
 Security note: the model file is a pickle. Only serve a model you trained yourself; the service
@@ -27,13 +27,13 @@ from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, ConfigDict, Field, create_model
 
-from churnguard import __version__
-from churnguard.config import load_config
-from churnguard.data import DataValidationError
-from churnguard.predictions import ModelBundle, ModelLoadError, load_bundle, score_frame
-from churnguard.schema import DataSchema
+from churnlens import __version__
+from churnlens.config import load_config
+from churnlens.data import DataValidationError
+from churnlens.predictions import ModelBundle, ModelLoadError, load_bundle, score_frame
+from churnlens.schema import DataSchema
 
-logger = logging.getLogger("churnguard.service")
+logger = logging.getLogger("churnlens.service")
 
 MAX_BATCH = 1000
 ThresholdQuery = Annotated[
@@ -72,7 +72,7 @@ def build_record_model(schema: DataSchema) -> type[BaseModel]:
 
 
 def _models_dir() -> Path:
-    override = os.environ.get("CHURNGUARD_MODELS_DIR")
+    override = os.environ.get("CHURNLENS_MODELS_DIR")
     return Path(override) if override else load_config().models_dir
 
 
@@ -87,7 +87,7 @@ def create_app(models_dir: str | Path | None = None) -> FastAPI:
         logger.error("Model not loaded: %s", exc)
 
     app = FastAPI(
-        title="ChurnGuard AI scoring API",
+        title="ChurnLens scoring API",
         version=__version__,
         description=(
             "Scores customers for churn risk with the saved scikit-learn pipeline. "
@@ -98,7 +98,7 @@ def create_app(models_dir: str | Path | None = None) -> FastAPI:
     app.state.bundle = bundle
     app.state.load_error = load_error
 
-    origins = [o.strip() for o in os.environ.get("CHURNGUARD_CORS_ORIGINS", "").split(",") if o.strip()]
+    origins = [o.strip() for o in os.environ.get("CHURNLENS_CORS_ORIGINS", "").split(",") if o.strip()]
     if origins:
         app.add_middleware(CORSMiddleware, allow_origins=origins, allow_methods=["GET", "POST"],
                            allow_headers=["*"])
@@ -132,7 +132,7 @@ def create_app(models_dir: str | Path | None = None) -> FastAPI:
 
     @app.get("/", tags=["meta"])
     def root() -> dict[str, str]:
-        return {"service": "churnguard-ai", "docs": "/docs", "health": "/health"}
+        return {"service": "churnlens", "docs": "/docs", "health": "/health"}
 
     @app.get("/health", tags=["meta"])
     def health() -> dict[str, Any]:

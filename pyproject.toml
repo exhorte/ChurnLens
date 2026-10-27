@@ -3,9 +3,9 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "churnguard"
+name = "churnlens"
 version = "0.1.0"
-description = "ChurnGuard AI - customer churn analysis: rigorous model comparison, error analysis, explainability and retention simulation."
+description = "ChurnLens - customer churn analysis: rigorous model comparison, error analysis, explainability and retention simulation."
 readme = "README.md"
 requires-python = ">=3.11"
 license = { file = "LICENSE" }

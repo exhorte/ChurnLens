@@ -3,8 +3,8 @@ from __future__ import annotations
 
 import streamlit as st
 
-from churnguard.data import DataValidationError
-from churnguard.explainability import ASSOCIATION_NOTICE, is_linear, native_importance
+from churnlens.data import DataValidationError
+from churnlens.explainability import ASSOCIATION_NOTICE, is_linear, native_importance
 
 from .common import horizontal_bars, local_explanation_view, signed_bars
 from .context import AppContext

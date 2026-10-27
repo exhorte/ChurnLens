@@ -1,4 +1,4 @@
-# Model card — ChurnGuard demo model
+# Model card — ChurnLens demo model
 
 Static summary of the committed demo model. The app's *About / Model Card* page shows the same information
 live from `models/metadata.json`, which is authoritative; if the two ever disagree, trust the metadata.

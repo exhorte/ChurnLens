@@ -1,12 +1,12 @@
-# Container image for the ChurnGuard scoring API (service/main.py).
-# Build:  docker build -t churnguard-api .
-# Run:    docker run --rm -p 8000:8000 churnguard-api   ->   http://localhost:8000/docs
+# Container image for the ChurnLens scoring API (service/main.py).
+# Build:  docker build -t churnlens-api .
+# Run:    docker run --rm -p 8000:8000 churnlens-api   ->   http://localhost:8000/docs
 FROM python:3.12-slim
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=1 \
-    CHURNGUARD_MODELS_DIR=/app/models
+    CHURNLENS_MODELS_DIR=/app/models
 
 WORKDIR /app
 

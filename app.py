@@ -1,8 +1,8 @@
-"""ChurnGuard AI - customer retention analysis (Streamlit).
+"""ChurnLens - customer retention analysis (Streamlit).
 
     streamlit run app.py
 
-Pages live in ui/, the machine-learning code in src/churnguard/ (tested without the interface).
+Pages live in ui/, the machine-learning code in src/churnlens/ (tested without the interface).
 """
 import sys
 from pathlib import Path
@@ -14,9 +14,9 @@ sys.path.insert(0, str(ROOT))
 import pandas as pd
 import streamlit as st
 
-from churnguard.config import ConfigError, load_config
-from churnguard.data import DataValidationError, read_csv
-from churnguard.predictions import ModelLoadError
+from churnlens.config import ConfigError, load_config
+from churnlens.data import DataValidationError, read_csv
+from churnlens.predictions import ModelLoadError
 from ui import (
     customer_risk,
     dashboard,
@@ -112,14 +112,14 @@ def _sidebar_controls(ws: Workspace, page: str) -> tuple[float, str, pd.DataFram
 
 
 def main() -> None:
-    st.set_page_config(page_title="ChurnGuard AI", page_icon="🛡️", layout="wide")
+    st.set_page_config(page_title="ChurnLens", page_icon="🔍", layout="wide")
     try:
         config = load_config()
     except ConfigError as exc:
         st.error(f"Invalid configuration: {exc}")
         st.stop()
 
-    st.sidebar.markdown("## 🛡️ ChurnGuard AI")
+    st.sidebar.markdown("## 🔍 ChurnLens")
     st.sidebar.caption("Customer retention intelligence - an analysis aid, not a production system.")
     ws, error = _active_workspace(config)
     page = st.sidebar.radio("Section", list(PAGES), key="page")

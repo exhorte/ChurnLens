@@ -331,7 +331,7 @@ def _environment() -> dict[str, str]:
         "pandas": pd.__version__,
         "numpy": np.__version__,
         "joblib": joblib.__version__,
-        "churnguard": __version__,
+        "churnlens": __version__,
     }
 
 
@@ -346,7 +346,7 @@ def build_metadata(result: ExperimentResult, data_file: str | Path | None) -> di
     """Everything needed to identify, audit and reuse the model (JSON-serialisable)."""
     cfg = result.config
     return {
-        "project": "ChurnGuard AI",
+        "project": "ChurnLens",
         "run_id": result.run_id,
         "trained_at": result.run_date,
         "model_key": result.selected_key,
@@ -434,7 +434,11 @@ def save_experiment(result: ExperimentResult, models_dir: Path, reports_dir: Pat
     comparison.to_csv(paths["model_comparison"], index=False)
     folds.to_csv(paths["cv_folds"], index=False)
     result.oof.to_csv(paths["oof_predictions"], index=False)
-    result.test_predictions.to_csv(paths["test_predictions"], index=False)
+    # Customer identifiers are data, not results: the committed report keeps only the row position
+    # (join back to your own file by `row`), so reports never re-publish a dataset's identifiers.
+    result.test_predictions.drop(columns="customer_id", errors="ignore").to_csv(
+        paths["test_predictions"], index=False
+    )
     evaluation = pd.DataFrame(
         [
             {"setting": "recommended threshold", "threshold": result.threshold.threshold,

@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from churnguard.error_analysis import (
+from churnlens.error_analysis import (
     OUTCOMES,
     classify_outcomes,
     compare_groups,

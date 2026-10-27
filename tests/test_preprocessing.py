@@ -3,9 +3,9 @@ import pandas as pd
 import pytest
 from sklearn.compose import ColumnTransformer  # noqa: F401  (documenting the transformer under test)
 
-from churnguard.config import Config
-from churnguard.data import DataValidationError
-from churnguard.pipeline import (
+from churnlens.config import Config
+from churnlens.data import DataValidationError
+from churnlens.pipeline import (
     MODEL_REGISTRY,
     FeatureSpec,
     build_estimator,
@@ -13,7 +13,7 @@ from churnguard.pipeline import (
     candidate_estimators,
     encoded_feature_table,
 )
-from churnguard.preprocessing import (
+from churnlens.preprocessing import (
     CONTRACT_MONTHS,
     SERVICE_COLUMNS,
     TelcoFeatureEngineer,
